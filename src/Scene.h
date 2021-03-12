@@ -30,6 +30,8 @@ public:
 	void updateDisplayList();
 	void drawDisplayList();
 
+	std::vector<DisplayObject*> getDisplayList() const;
+
 private:
 	uint32_t m_nextLayerIndex = 0;
 	std::vector<DisplayObject*> m_displayList;

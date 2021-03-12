@@ -31,8 +31,7 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
-
-
+	checkShipLOS(m_pTarget);
 }
 
 void PlayScene::clean()
@@ -154,4 +153,30 @@ void PlayScene::GUI_Function()
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());
 	ImGui::StyleColorsDark();
+}
+
+void PlayScene::checkShipLOS(DisplayObject* target)
+{
+	m_pShip->setHasLOS(false); // Fixes distance bug.
+	// if ship to target distance is <= LOS distance
+	auto ShipToTargetDistance = Util::distance(m_pShip->getTransform()->position, target->getTransform()->position);
+	if (ShipToTargetDistance <= m_pShip->getLOSDistance())
+	{
+		std::vector<DisplayObject*> contactList;
+		for (auto object : getDisplayList())
+		{
+			if (object->getType() != m_pShip->getType() && object->getType() != target->getType())
+			{
+				auto ShipToObjectDistance = Util::distance(m_pShip->getTransform()->position, object->getTransform()->position);
+				if (ShipToObjectDistance <= ShipToTargetDistance)
+				{
+					contactList.push_back(object);
+				}
+			}
+		}
+		contactList.push_back(target);
+		auto hasLOS = CollisionManager::LOSCheck(m_pShip->getTransform()->position, 
+			m_pShip->getTransform()->position + m_pShip->getCurrentDirection() * m_pShip->getLOSDistance(), contactList, target);
+		m_pShip->setHasLOS(hasLOS);
+	}
 }

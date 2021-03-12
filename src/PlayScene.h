@@ -36,6 +36,7 @@ private:
 	/*Obstacle* m_pObstacle2;
 	Obstacle* m_pObstacle3;*/
 
+	void checkShipLOS(DisplayObject* target);
 };
 
 

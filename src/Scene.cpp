@@ -100,3 +100,8 @@ void Scene::drawDisplayList()
 	}
 
 }
+
+std::vector<DisplayObject*> Scene::getDisplayList() const
+{
+	return m_displayList;
+}

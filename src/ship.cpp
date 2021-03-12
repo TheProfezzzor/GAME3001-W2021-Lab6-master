@@ -4,7 +4,7 @@
 #include "TextureManager.h"
 #include "Util.h"
 
-Ship::Ship() : m_maxSpeed(10.0f)
+Ship::Ship() : m_maxSpeed(10.0f), m_LOSDistance(400.0f), m_LOSColour(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f))
 {
 	TextureManager::Instance()->load("../Assets/textures/ship3.png","ship");
 
@@ -21,6 +21,9 @@ Ship::Ship() : m_maxSpeed(10.0f)
 	m_currentHeading = 0.0f; // current facing angle
 	m_currentDirection = glm::vec2(1.0f, 0.0f); // facing right
 	m_turnRate = 5.0f; // 5 degrees per frame
+
+	//m_LOSDistance = 400.0f; // Alternate "initialization"
+	// setLOSDistance(400.0f); // Second alternate
 }
 
 
@@ -35,6 +38,10 @@ void Ship::draw()
 
 	// draw the ship
 	TextureManager::Instance()->draw("ship", x, y, m_currentHeading, 255, true);
+
+	// draw LOS line
+	Util::DrawLine(getTransform()->position,
+		getTransform()->position + getCurrentDirection() * m_LOSDistance, m_LOSColour);
 }
 
 
@@ -100,10 +107,24 @@ float Ship::getMaxSpeed() const
 	return m_maxSpeed;
 }
 
+float Ship::getLOSDistance() const
+{
+	return m_LOSDistance;
+}
+
+bool Ship::hasLOS() const
+{
+	return m_hasLOS;
+}
+
+float Ship::getCurrentHeading() const
+{
+	return m_currentHeading;
+}
+
 void Ship::setTargetPosition(glm::vec2 newPosition)
 {
 	m_targetPosition = newPosition;
-
 }
 
 void Ship::setCurrentDirection(glm::vec2 newDirection)
@@ -116,7 +137,22 @@ void Ship::setMaxSpeed(float newSpeed)
 	m_maxSpeed = newSpeed;
 }
 
+void Ship::setLOSDistance(float distance)
+{
+	m_LOSDistance = distance;
+}
 
+void Ship::setHasLOS(bool state)
+{
+	m_hasLOS = state;
+	m_LOSColour = (m_hasLOS ? glm::vec4(0.0f, 1.0f, 0.0f, 1.0f) : glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+}
+
+void Ship::setCurrentHeading(float heading)
+{
+	m_currentHeading = heading;
+	m_changeDirection();
+}
 
 void Ship::m_checkBounds()
 {

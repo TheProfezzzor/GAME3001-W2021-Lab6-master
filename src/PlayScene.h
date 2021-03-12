@@ -32,6 +32,9 @@ private:
 
 	Target* m_pTarget;
 	Ship* m_pShip;
+	Obstacle* m_pObstacle;
+	/*Obstacle* m_pObstacle2;
+	Obstacle* m_pObstacle3;*/
 
 };
 

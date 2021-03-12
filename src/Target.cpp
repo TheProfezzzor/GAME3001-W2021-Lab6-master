@@ -1,9 +1,7 @@
 #include "Target.h"
 
-
 #include "SoundManager.h"
 #include "TextureManager.h"
-
 
 Target::Target()
 {

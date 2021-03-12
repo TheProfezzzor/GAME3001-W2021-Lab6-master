@@ -3,9 +3,9 @@
 #define __TARGET__
 
 
-#include "NavigationObject.h"
+#include "DisplayObject.h"
 
-class Target final : public NavigationObject
+class Target final : public DisplayObject
 {
 public:
 	Target();
@@ -16,12 +16,10 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
-	
 private:
 	void m_move();
 	void m_checkBounds();
 	void m_reset();
-
 };
 
 

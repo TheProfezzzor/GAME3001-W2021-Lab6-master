@@ -86,7 +86,9 @@ void PlayScene::start()
 	addChild(m_pShip);
 	
 	// add an obstacle
-
+	m_pObstacle = new Obstacle();
+	m_pObstacle->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	addChild(m_pObstacle);
 
 	// added the target to the scene a goal
 	m_pTarget = new Target();
@@ -118,8 +120,8 @@ void PlayScene::GUI_Function()
 	static int targetPosition[] = { m_pTarget->getTransform()->position.x, m_pTarget->getTransform()->position.y };
 	if(ImGui::SliderInt2("Target Position", targetPosition, 0, 800))
 	{
-		m_pTarget->getTransform()->position.x = shipPosition[0];
-		m_pTarget->getTransform()->position.y = shipPosition[1];
+		m_pTarget->getTransform()->position.x = targetPosition[0];
+		m_pTarget->getTransform()->position.y = targetPosition[1];
 	}
 	
 	ImGui::Separator();

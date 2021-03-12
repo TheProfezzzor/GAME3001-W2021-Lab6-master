@@ -83,7 +83,7 @@ void PlayScene::start()
 	// add the ship to the scene as a start point
 	m_pShip = new Ship();
 	m_pShip->getTransform()->position = glm::vec2(200.0f, 300.0f);
-	addChild(m_pShip);
+	addChild(m_pShip, 2);
 	
 	// add an obstacle
 	m_pObstacle = new Obstacle();
@@ -94,7 +94,6 @@ void PlayScene::start()
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = glm::vec2(600.0f, 300.0f);
 	addChild(m_pTarget);
-	
 }
 
 void PlayScene::GUI_Function() 
@@ -109,6 +108,15 @@ void PlayScene::GUI_Function()
 	//ImGui::ShowDemoWindow();
 	
 	ImGui::Begin("GAME3001 - Lab 6", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
+
+	// Enable ship rotation
+	static int angle;
+	if (ImGui::SliderInt("Ship Direction", &angle, -360, 360))
+	{
+		m_pShip->setCurrentHeading(angle);
+	}
+
+	ImGui::Separator();
 
 	static int shipPosition[] = { m_pShip->getTransform()->position.x, m_pShip->getTransform()->position.y };
 	if (ImGui::SliderInt2("Ship Position", shipPosition, 0, 800))
